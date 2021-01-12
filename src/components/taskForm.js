@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from './../actions/index';
 
 class TaskForm extends Component {
     constructor (props) {
@@ -10,24 +12,24 @@ class TaskForm extends Component {
         }
     }
 
-    componentWillMount() {
-        if (this.props.task) {
-            this.setState({
-                id : this.props.task.id,
-                name : this.props.task.name,
-                status : this.props.task.status
-            });
-        }
-    }
+    // componentWillMount() {
+    //     if (this.props.task) {
+    //         this.setState({
+    //             id : this.props.task.id,
+    //             name : this.props.task.name,
+    //             status : this.props.task.status
+    //         });
+    //     }
+    // }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps && nextProps.task) {
+        if (nextProps && nextProps.itemEdit) {
             this.setState({
-                id: nextProps.task.id,
-                name : nextProps.task.name,
-                status : nextProps.task.status
+                id: nextProps.itemEdit.id,
+                name : nextProps.itemEdit.name,
+                status : nextProps.itemEdit.status
             });
-        } else if(nextProps && nextProps.task===null) {
+        } else if(nextProps && nextProps.itemEdit===null) {
             this.setState({
                 id: '',
                 name : '',
@@ -50,7 +52,8 @@ class TaskForm extends Component {
     }
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onSubmit(this.state);
+        // this.props.onSubmit(this.state);
+        this.props.onAddTask(this.state);
         this.onClear();
         this.onCloseForm();
     }
@@ -63,6 +66,10 @@ class TaskForm extends Component {
     }
     render() {
         let {id} = this.state;
+        let { isDisplayForm } = this.props;
+        if (!isDisplayForm) {
+            return null;
+        }
         return (
              <div className="panel panel-warning">
                 <div className="panel-heading">
@@ -97,5 +104,22 @@ class TaskForm extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        isDisplayForm : state.isDisplayForm,
+        itemEdit : state.itemEdit
+    }
+}
 
-export default TaskForm;
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onAddTask : (task) => {
+            dispatch(actions.addTask(task));
+        },
+        onCloseForm : () => {
+            dispatch(actions.closeForm());
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskForm);
