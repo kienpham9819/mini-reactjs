@@ -4,7 +4,7 @@ import TaskForm from './components/taskForm';
 import Control from './components/control';
 import TaskList from './components/taskList';
 import _, { findIndex } from 'lodash';
-
+import demo from './tranning/demo';
 class App extends Component{
     constructor (props) {
         super(props);
@@ -68,7 +68,7 @@ class App extends Component{
             let index = this.findById(data.id);
             tasks[index] = data;
         }
-        
+
         this.setState({
             tasks : tasks
         });
@@ -155,9 +155,9 @@ class App extends Component{
 
     render () {
         let { tasks,
-         displayForm, 
-         updateTask, 
-         filter, 
+         displayForm,
+         updateTask,
+         filter,
          keyword,
          sortBy,
          sortValue } = this.state;
@@ -229,9 +229,9 @@ class App extends Component{
                             sortValue={sortValue}/>
                         <div className="row mt-15">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <TaskList tasks={ tasks } 
+                                <TaskList tasks={ tasks }
                                     onUpdateStatus={this.onUpdateStatus}
-                                    onDelete={this.onDelete} 
+                                    onDelete={this.onDelete}
                                     onUpdate={this.onUpdate}
                                     onFilter={this.onFilter}/>
                             </div>
